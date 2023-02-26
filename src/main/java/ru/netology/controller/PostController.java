@@ -1,6 +1,7 @@
 package ru.netology.controller;
 
 import com.google.gson.Gson;
+import ru.netology.exception.NotFoundException;
 import ru.netology.model.Post;
 import ru.netology.service.PostService;
 
@@ -10,6 +11,7 @@ import java.io.Reader;
 
 public class PostController {
   public static final String APPLICATION_JSON = "application/json";
+  public static final String TEXT = "text/javascript";
   private final PostService service;
 
   public PostController(PostService service) {
@@ -23,8 +25,14 @@ public class PostController {
     response.getWriter().print(gson.toJson(data));
   }
 
-  public void getById(long id, HttpServletResponse response) {
-    // TODO: deserialize request & serialize response
+  public void getById(long id, HttpServletResponse response) throws IOException, NotFoundException {
+    try {response.setContentType(APPLICATION_JSON);
+    final var data = service.getById(id);
+    final var gson = new Gson();
+    response.getWriter().print(gson.toJson(data));
+    } catch (NotFoundException e) {
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    }
   }
 
   public void save(Reader body, HttpServletResponse response) throws IOException {
@@ -35,7 +43,12 @@ public class PostController {
     response.getWriter().print(gson.toJson(data));
   }
 
-  public void removeById(long id, HttpServletResponse response) {
-    // TODO: deserialize request & serialize response
+  public void removeById(long id, HttpServletResponse response) throws IOException, NotFoundException {
+    try {response.setContentType(TEXT);
+    service.removeById(id);
+    response.getWriter().print("Deleted " + id);
+    } catch (NotFoundException e) {
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    }
   }
 }
