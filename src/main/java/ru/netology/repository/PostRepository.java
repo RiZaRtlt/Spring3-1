@@ -12,9 +12,7 @@ public class PostRepository {
   protected AtomicLong globalId = new AtomicLong(0);
 
   public List<Post> all() {
-    List<Post> list = new ArrayList<>(map.values());
-
-    return list;
+     return new ArrayList<>(map.values());
   }
 
   public Optional<Post> getById(long id) {
@@ -37,8 +35,6 @@ public class PostRepository {
   }
 
   public void removeById(long id) {
-    if (map.containsKey(id)) {
-      map.remove(id);
-    }
+    map.remove(id);
   }
 }
