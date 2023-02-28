@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 // Stub
-@Repository
 public class PostRepositoryImpl implements PostRepository {
   protected Map<Long, Post> map = new ConcurrentHashMap<>();
   protected AtomicLong globalId = new AtomicLong(0);
